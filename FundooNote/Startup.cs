@@ -1,3 +1,5 @@
+using BusinessLayer.Interface;
+using BusinessLayer.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -9,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RepoLayer.Context;
+using RepoLayer.Interface;
+using RepoLayer.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +34,9 @@ namespace FundooNote
         {
             services.AddDbContext<FundooContext>(opts =>
             opts.UseSqlServer(Configuration["ConnectionString:FundooDB"]));
-
+            //User Configuration
+            services.AddTransient<IUserBusiness,UserBusiness>();
+            services.AddTransient<IUserRepo, UserRepo>();
             services.AddControllers();
         }
 
