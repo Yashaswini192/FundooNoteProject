@@ -9,6 +9,7 @@ namespace BusinessLayer.Interface
     public interface IUserBusiness
     {
         public User Registration(UserRegistration userRegistration);
-        
+
+        public User UserLogin(Login login);
     }
 }

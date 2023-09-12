@@ -16,7 +16,7 @@ namespace FundooNote.Controllers
             this.userBusiness = userBusiness;
         }
 
-        [HttpPost]
+        [HttpPost] //inserting values
         [Route("Registration")]
 
         public IActionResult UserRegister(UserRegistration userReg)
@@ -25,11 +25,27 @@ namespace FundooNote.Controllers
 
             if (result != null)
             {
-                return Ok(new {message = "Registration Success",data = result});
+                return Ok(new {success = true,message = "Registration Success",data = result});
             }
             else
             {
-                return BadRequest(new {message = "Registration Not Successfull",data = result});
+                return BadRequest(new {success = false,message = "Registration Not Successfull"});
+            }
+        }
+
+        [HttpPost]
+        [Route("Login")]
+        public IActionResult UserLogin(Login login)
+        {
+            var result = userBusiness.UserLogin(login);
+
+            if(result != null)
+            {
+                return Ok(new { success = true, message = "Login Successfull", data = result });
+            }
+            else
+            {
+                return BadRequest(new {success = false,message = "Login unsuccessfull" });
             }
         }
     }

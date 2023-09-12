@@ -6,9 +6,11 @@ using System.Text;
 
 namespace RepoLayer.Interface
 {
-    public interface IUserRepo
+    public interface IUserRepo 
     {
         public User Registration(UserRegistration userRegistration);
+
+        public User UserLogin(Login login);
        
     }
 }

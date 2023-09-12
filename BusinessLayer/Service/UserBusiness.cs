@@ -28,5 +28,17 @@ namespace BusinessLayer.Service
                 throw;
             }
         }
+
+        public User UserLogin(Login login)
+        {
+            try
+            {
+                return userRepo.UserLogin(login);
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

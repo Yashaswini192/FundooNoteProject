@@ -4,12 +4,8 @@ using System.Text;
 
 namespace CommonLayer.Model
 {
-    public  class UserRegistration  //request model
+    public class Login
     {
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
-
         public string Email { get; set; }
 
         public string Password { get; set; }

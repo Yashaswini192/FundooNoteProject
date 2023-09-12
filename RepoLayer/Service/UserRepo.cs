@@ -6,6 +6,7 @@ using RepoLayer.Interface;
 using RepoLayer.Migrations;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace RepoLayer.Service
@@ -14,12 +15,12 @@ namespace RepoLayer.Service
     {
         private readonly FundooContext fundoo;
 
-        private readonly IConfiguration configuration;
+        //private readonly IConfiguration configuration;
 
         public UserRepo(FundooContext fundoo, IConfiguration configuration)
         {
             this.fundoo = fundoo;
-            this.configuration = configuration;
+            //this.configuration = configuration;
 
         }
 
@@ -45,6 +46,21 @@ namespace RepoLayer.Service
             }
         }
 
+        public User UserLogin(Login login)
+        {
+           var res =  fundoo.users.FirstOrDefault( c => c.Email == login.Email);
 
+            if(res != null) {
+
+                return res;
+
+            }
+            else
+            {
+                return null;
+            }
+
+
+        }
     }
 }
