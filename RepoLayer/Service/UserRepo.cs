@@ -1,12 +1,16 @@
 ﻿using CommonLayer.Model;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using RepoLayer.Context;
 using RepoLayer.Entity;
 using RepoLayer.Interface;
 using RepoLayer.Migrations;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace RepoLayer.Service
@@ -14,13 +18,12 @@ namespace RepoLayer.Service
     public class UserRepo : IUserRepo
     {
         private readonly FundooContext fundoo;
-
-        //private readonly IConfiguration configuration;
+        private readonly IConfiguration configuration;
 
         public UserRepo(FundooContext fundoo, IConfiguration configuration)
         {
             this.fundoo = fundoo;
-            //this.configuration = configuration;
+            this.configuration = configuration;
 
         }
 
@@ -46,21 +49,47 @@ namespace RepoLayer.Service
             }
         }
 
-        public User UserLogin(Login login)
+        public string UserLogin(Login login)
         {
-           var res =  fundoo.users.FirstOrDefault( c => c.Email == login.Email);
+            var user = fundoo.users.FirstOrDefault(c => c.Email == login.Email && c.Password == login.Password);
 
-            if(res != null) {
-
-                return res;
+            if (user != null)
+            {
+                string token = GenerateToken(login.Email, user.UserId);
+                return token;
 
             }
             else
             {
                 return null;
             }
+        }
 
+        public string GenerateToken(string email,long UserId)
+        {
+            
+            var securitykey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWTConfig:key"]));
+            var credentials = new SigningCredentials(securitykey,SecurityAlgorithms.HmacSha256);
+
+            var claims = new[] {
+                    new Claim("UserID", UserId.ToString()),
+                    new Claim("Email", email),
+
+                };
+
+            var token = new JwtSecurityToken(
+                issuer: configuration["Jwt:Issuer"],
+                audience: configuration["Jwt:Audience"],
+                claims,
+                expires: DateTime.Now.AddHours(1),
+                signingCredentials: credentials
+                );    
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
 
         }
+
+        }
+        
     }
-}
+

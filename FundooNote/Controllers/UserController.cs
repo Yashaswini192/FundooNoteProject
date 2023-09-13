@@ -34,7 +34,7 @@ namespace FundooNote.Controllers
         }
 
         [HttpPost]
-        [Route("Login")]
+        [Route("UserLogin")]
         public IActionResult UserLogin(Login login)
         {
             var result = userBusiness.UserLogin(login);

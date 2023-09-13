@@ -10,7 +10,7 @@ namespace RepoLayer.Interface
     {
         public User Registration(UserRegistration userRegistration);
 
-        public User UserLogin(Login login);
+        public string UserLogin(Login login);
        
     }
 }
