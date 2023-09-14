@@ -48,5 +48,22 @@ namespace FundooNote.Controllers
                 return BadRequest(new {success = false,message = "Login unsuccessfull" });
             }
         }
+
+        [HttpPost]
+        [Route("ForgotPassword")]
+
+        public IActionResult ForgotPassword(string email)
+        {
+            var result = userBusiness.ForgotPassword(email);
+
+            if (result != null)
+            {
+                return Ok(new {success = true,message = "Reset Link is sent to your email",data = result});
+            }
+            else
+            {
+                return BadRequest(new { success = false,message = "Email not found"});
+            }
+        }
     }
 }
