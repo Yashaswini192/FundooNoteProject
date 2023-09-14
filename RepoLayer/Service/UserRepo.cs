@@ -89,7 +89,23 @@ namespace RepoLayer.Service
 
         }
 
+        public string ForgotPassword(string email)
+        {
+            var emailCheck = this.fundoo.users.Where(b => b.Email == email).FirstOrDefault();
+            if (emailCheck != null)
+            {
+                var token = GenerateToken(emailCheck.Email, emailCheck.UserId);
+                MSMQ msmq = new MSMQ();
+                msmq.SendMessage(token);
+                return token;
+            }
+            else
+            {
+                return null;
+            }
         }
+
+    }
         
     }
 
