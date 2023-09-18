@@ -47,10 +47,35 @@ namespace FundooNote
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Version = "v1" });
-            });
+           
 
-            //Configuration for JWT 
-            var token = Configuration.GetValue<string>("JWTConfig:key");
+           
+                var securitySchema = new OpenApiSecurityScheme
+                {
+                    Description = "Using the Authorization header with the Bearer scheme.",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = JwtBearerDefaults.AuthenticationScheme
+                    }
+                };
+                c.AddSecurityDefinition(securitySchema.Reference.Id, securitySchema);
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                {
+                        securitySchema, Array.Empty<string>() }
+                });
+            });
+        
+
+        //Configuration for JWT 
+        var token = Configuration.GetValue<string>("JWTConfig:key");
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -63,11 +88,11 @@ namespace FundooNote
                 {
                     ValidateIssuer = false,
                     ValidateAudience = false,
-                    ValidIssuer = Configuration["Jwt:Issuer"],
-                    ValidAudience = Configuration["Jwt:Audience"],
+                    ValidIssuer = Configuration["JWTConfig:Issuer"],
+                    ValidAudience = Configuration["JWTConfig:Audience"],
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration["Jwt:key"]))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration["JWTConfig:key"]))
 
                 };
             });

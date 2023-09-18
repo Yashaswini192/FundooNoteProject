@@ -1,7 +1,14 @@
 ﻿using BusinessLayer.Interface;
+using BusinessLayer.Service;
 using CommonLayer.Model;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RepoLayer.Entity;
+using System;
+using System.Linq;
+using System.Security.Claims;
 
 namespace FundooNote.Controllers
 {
@@ -21,15 +28,23 @@ namespace FundooNote.Controllers
 
         public IActionResult UserRegister(UserRegistration userReg)
         {
-            var result = userBusiness.Registration(userReg);
+            try
+            {
+                var result = userBusiness.Registration(userReg);
 
-            if (result != null)
-            {
-                return Ok(new {success = true,message = "Registration Success",data = result});
+                if (result != null)
+                {
+                    return Ok(new { success = true, message = "Registration Success", data = result });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "Registration Not Successfull" });
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest(new {success = false,message = "Registration Not Successfull"});
+
+                throw ex;
             }
         }
 
@@ -37,15 +52,23 @@ namespace FundooNote.Controllers
         [Route("UserLogin")]
         public IActionResult UserLogin(Login login)
         {
-            var result = userBusiness.UserLogin(login);
+            try
+            {
+                var result = userBusiness.UserLogin(login);
 
-            if(result != null)
-            {
-                return Ok(new { success = true, message = "Login Successfull", data = result });
+                if (result != null)
+                {
+                    return Ok(new { success = true, message = "Login Successfull", data = result });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "Login unsuccessfull" });
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest(new {success = false,message = "Login unsuccessfull" });
+
+                throw ex;
             }
         }
 
@@ -54,16 +77,97 @@ namespace FundooNote.Controllers
 
         public IActionResult ForgotPassword(string email)
         {
-            var result = userBusiness.ForgotPassword(email);
+            try
+            {
+                var result = userBusiness.ForgotPassword(email);
 
-            if (result != null)
-            {
-                return Ok(new {success = true,message = "Reset Link is sent to your email",data = result});
+                if (result != null)
+                {
+                    return Ok(new { success = true, message = "Reset Link is sent to your email"});
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "Email not found" });
+                }
             }
-            else
+            catch(Exception ex)
             {
-                return BadRequest(new { success = false,message = "Email not found"});
+                throw ex;
             }
         }
-    }
+
+
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpPut]
+        [Route("ResetPassword")]
+        public IActionResult ResetPassword(ResetPasswordModel resetPassword)
+        {
+            try
+            {
+                var email =User.Claims.FirstOrDefault(x=>x.Type=="Email").Value.ToString();
+                var result = userBusiness.ResetPassword(resetPassword, email);
+
+                if (result != null)
+                {
+                    return Ok(new { success = true, message = "Password has Changed successfully", data = result });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "Password has not changed" });
+                }
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+        [HttpGet]
+        [Route("GetAllUsers")]
+        public IActionResult GetAllUsers()
+        {
+            try
+            {
+                var res = userBusiness.GetALLUsers();
+                if(res != null)
+                {
+                    return Ok(new {success = true , message = "Retreived All Users " , data = res});
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "Failed to Retreive Data" });
+                }
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetUserByUserId")]
+        public IActionResult GetUserByUserId(long UserId)
+        { 
+            try
+            {
+                var res = userBusiness.GetUserByUserId(UserId);
+                if(res != null)
+                {
+                    return Ok(new { success = true , message = "Retreived All users by user ID ",data = res});
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "User Id is not Found" });
+                }
+            }
+            catch(Exception ex) 
+            {
+                throw ex;
+            }
+        }
+
+
+        }
 }
