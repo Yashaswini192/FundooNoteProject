@@ -25,7 +25,19 @@ namespace BusinessLayer.Service
             }
             catch (Exception ex)
             {
-                return null;
+                throw ex;
+            }
+        }
+
+        public Notes RetreiveNote(int NoteId)
+        {
+            try
+            {
+                return notesRepo.RetreiveNote(NoteId);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
     }

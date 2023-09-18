@@ -10,5 +10,7 @@ namespace BusinessLayer.Interface
     {
         public Notes CreateNote(CreateNoteModel createNote,int UserId);
 
+        public Notes RetreiveNote(int NoteId);
+
     }
 }
