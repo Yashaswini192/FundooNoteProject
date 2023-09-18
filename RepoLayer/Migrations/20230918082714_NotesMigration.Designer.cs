@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RepoLayer.Context;
 
 namespace RepoLayer.Migrations
 {
     [DbContext(typeof(FundooContext))]
-    partial class FundooContextModelSnapshot : ModelSnapshot
+    [Migration("20230918082714_NotesMigration")]
+    partial class NotesMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,8 +57,6 @@ namespace RepoLayer.Migrations
 
                     b.HasKey("NoteId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Notes");
                 });
 
@@ -82,15 +82,6 @@ namespace RepoLayer.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("users");
-                });
-
-            modelBuilder.Entity("RepoLayer.Entity.Notes", b =>
-                {
-                    b.HasOne("RepoLayer.Entity.User", "users")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
