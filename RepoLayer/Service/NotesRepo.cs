@@ -5,6 +5,7 @@ using RepoLayer.Entity;
 using RepoLayer.Interface;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace RepoLayer.Service
@@ -42,6 +43,29 @@ namespace RepoLayer.Service
                 if(notes != null)
                 {
                     return notes;
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+        public Notes RetreiveNote(int NoteId)
+        {
+            try
+            {
+                var result = fundooContext.Notes.FirstOrDefault(x => x.NoteId == NoteId);
+
+                if(result != null)
+                {
+                    return result;
                 }
                 else
                 {

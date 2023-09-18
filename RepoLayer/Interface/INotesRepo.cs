@@ -9,5 +9,7 @@ namespace RepoLayer.Interface
     public interface INotesRepo
     {
         public Notes CreateNote(CreateNoteModel createNote,int UserId);
+
+        public Notes RetreiveNote(int NoteId);
     }
 }
