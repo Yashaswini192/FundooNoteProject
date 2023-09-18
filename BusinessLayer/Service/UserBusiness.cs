@@ -17,11 +17,6 @@ namespace BusinessLayer.Service
             this.userRepo = userRepo;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="userRegistration"></param>
-        /// <returns></returns>
         public User Registration(UserRegistration userRegistration)
         {
             try
