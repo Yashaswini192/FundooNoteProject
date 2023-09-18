@@ -41,6 +41,8 @@ namespace FundooNote
             //User Configuration
             services.AddTransient<IUserBusiness,UserBusiness>();
             services.AddTransient<IUserRepo, UserRepo>();
+            services.AddTransient<INoteBusiness, NoteBusiness>();
+            services.AddTransient<INotesRepo, NotesRepo>();
             services.AddControllers();
             
             //swagger
