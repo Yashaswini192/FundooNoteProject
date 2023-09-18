@@ -53,9 +53,9 @@ namespace CommonLayer.Model
 
 
             }
-            catch (Exception ex)
+            catch 
             {
-                throw ex;
+                throw ;
             }
         }
     }
