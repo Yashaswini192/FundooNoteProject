@@ -17,15 +17,20 @@ namespace BusinessLayer.Service
             this.userRepo = userRepo;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userRegistration"></param>
+        /// <returns></returns>
         public User Registration(UserRegistration userRegistration)
         {
             try
             {
                 return userRepo.Registration(userRegistration);
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -35,9 +40,9 @@ namespace BusinessLayer.Service
             {
                 return userRepo.UserLogin(login);
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -47,10 +52,48 @@ namespace BusinessLayer.Service
             {
                 return userRepo.ForgotPassword(email);
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
+
+        public bool ResetPassword(ResetPasswordModel resetpassword, string email)
+        {
+            try
+            {
+                return userRepo.ResetPassword(resetpassword, email);
+            }
+            catch(Exception ex) 
+            {
+                throw ex;
+            }
+        }
+
+        public List<User> GetALLUsers()
+        {
+            try
+            {
+                return userRepo.GetALLUsers();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public User GetUserByUserId(long UserId)
+        {
+            try
+            {
+                return userRepo.GetUserByUserId(UserId);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
     }
 }
