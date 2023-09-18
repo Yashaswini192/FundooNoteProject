@@ -2,6 +2,7 @@
 using CommonLayer.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using RepoLayer.Entity;
 using System;
 using System.Linq;
 
@@ -42,6 +43,31 @@ namespace FundooNote.Controllers
 
         }
 
-       
+        [HttpGet]
+        [Route("RetreiveNote")]
+
+        public IActionResult RetreiveNote(int NoteId)
+        {
+            try
+            {
+                var result = noteBusiness.RetreiveNote(NoteId);
+
+                if(result != null)
+                {
+                    return Ok(new { success = true, message = "Retreived Note Successfully", data = result });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "CouldNot find NoteID" });
+                }
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+
     }
 }
