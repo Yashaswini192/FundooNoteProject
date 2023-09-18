@@ -14,6 +14,11 @@ namespace RepoLayer.Interface
 
         public string ForgotPassword(string email);
 
+        public bool ResetPassword(ResetPasswordModel resetPassword,string email);
+
+        public List<User> GetALLUsers();
+
+        public User GetUserByUserId(long UserId);
 
     }
 }
