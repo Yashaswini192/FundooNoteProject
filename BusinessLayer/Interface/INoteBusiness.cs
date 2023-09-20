@@ -14,7 +14,7 @@ namespace BusinessLayer.Interface
 
         public Notes UpdateNote(CreateNoteModel createNote, int NoteId, int userId);
 
-        
+        public bool DeleteNote(int NoteId);
 
     }
 }

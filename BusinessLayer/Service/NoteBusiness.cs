@@ -53,6 +53,17 @@ namespace BusinessLayer.Service
             }
         }
 
-        
+        public bool DeleteNote(int NoteId)
+        {
+            try
+            {
+                return notesRepo.DeleteNote(NoteId);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
