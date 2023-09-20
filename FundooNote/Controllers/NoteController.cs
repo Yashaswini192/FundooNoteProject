@@ -91,7 +91,27 @@ namespace FundooNote.Controllers
             }
         }
 
-       
+        [HttpGet]
+        [Route("DeleteNote")]
+        public IActionResult DeleteNote(int NoteId, int userId)
+        {
+            try
+            {
+                var result = noteBusiness.DeleteNote(NoteId, userId);
+                if (result != null)
+                {
+                    return Ok(new { success = true, message = "Note Deleted SuccessFully" });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "Note is Not Deleted" });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
 
