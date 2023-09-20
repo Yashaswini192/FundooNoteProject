@@ -40,5 +40,19 @@ namespace BusinessLayer.Service
                 throw ex;
             }
         }
+
+        public Notes UpdateNote(CreateNoteModel createNote, int NoteId, int userId)
+        {
+            try
+            {
+                return notesRepo.UpdateNote(createNote,NoteId,userId);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        
     }
 }

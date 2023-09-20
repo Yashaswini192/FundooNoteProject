@@ -12,5 +12,9 @@ namespace BusinessLayer.Interface
 
         public Notes RetreiveNote(int NoteId);
 
+        public Notes UpdateNote(CreateNoteModel createNote, int NoteId, int userId);
+
+        
+
     }
 }
