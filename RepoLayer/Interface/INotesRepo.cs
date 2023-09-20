@@ -11,5 +11,9 @@ namespace RepoLayer.Interface
         public Notes CreateNote(CreateNoteModel createNote,int UserId);
 
         public Notes RetreiveNote(int NoteId);
+
+        public Notes UpdateNote(CreateNoteModel createNote, int NoteId, int userId);
+
+      
     }
 }

@@ -21,7 +21,7 @@ namespace RepoLayer.Service
             this.configuration = configuration;
         }
 
-        public Notes CreateNote(CreateNoteModel createNote,int UserId)
+        public Notes CreateNote(CreateNoteModel createNote, int UserId)
         {
             try
             {
@@ -39,8 +39,8 @@ namespace RepoLayer.Service
 
                 fundooContext.Notes.Add(notes);
                 fundooContext.SaveChanges();
-                
-                if(notes != null)
+
+                if (notes != null)
                 {
                     return notes;
                 }
@@ -50,7 +50,7 @@ namespace RepoLayer.Service
                 }
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -63,7 +63,7 @@ namespace RepoLayer.Service
             {
                 var result = fundooContext.Notes.FirstOrDefault(x => x.NoteId == NoteId);
 
-                if(result != null)
+                if (result != null)
                 {
                     return result;
                 }
@@ -73,10 +73,44 @@ namespace RepoLayer.Service
                 }
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public Notes UpdateNote(CreateNoteModel createNote, int NoteId,int userId)
+        {
+
+            try
+            {
+
+                var result = fundooContext.Notes.FirstOrDefault(x => x.NoteId == NoteId);
+                if (result != null)
+                {
+                    result.Title = createNote.Title;
+                    result.Description = createNote.Description;
+                    result.Remainder = createNote.Remainder;
+                    result.BgColor = createNote.BgColor;
+                    result.Image = createNote.Image;
+                    result.Archive = createNote.Archive;
+                    result.PinNote = createNote.PinNote;
+                    result.Trash = createNote.Trash;
+                    result.UserId = userId;
+
+                    fundooContext.SaveChanges();
+                    return result;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
             {
                 throw ex;
             }
         }
     }
+
 }
