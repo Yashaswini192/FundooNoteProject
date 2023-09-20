@@ -111,6 +111,27 @@ namespace RepoLayer.Service
                 throw ex;
             }
         }
+
+        public bool DeleteNote(int NoteId)
+        {
+            try
+            {
+                var deleteNote = fundooContext.Notes.Where(x => x.NoteId == NoteId).FirstOrDefault();
+
+                if (deleteNote != null)
+                {
+                    fundooContext.Notes.Remove(deleteNote);
+                    fundooContext.SaveChanges();
+                    return true;
+                }
+                return false;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 
 }
