@@ -68,6 +68,30 @@ namespace FundooNote.Controllers
         }
 
 
+        [HttpPost]
+        [Route("UpdateNote")]
 
+        public IActionResult UpdateNote(CreateNoteModel createNote, int NoteId, int userId)
+        {
+            try
+            {
+                var result = noteBusiness.UpdateNote(createNote, NoteId, userId);
+                if (result != null)
+                {
+                    return Ok(new { success = true, message = "Note Updated Successfully", data = result });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "Note is not Updated"}) ;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+       
     }
 }
+
