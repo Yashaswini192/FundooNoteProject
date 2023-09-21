@@ -181,7 +181,35 @@ namespace RepoLayer.Service
             }
             return null;
         }
-        
+
+
+        //ISTrash
+        public bool IsTrash(int NoteId)
+        {
+            try
+            {
+                var note = fundooContext.Notes.Where(x => x.NoteId == NoteId).FirstOrDefault();
+
+                if (note.Trash == false)
+                {
+                    note.Trash = true;
+                    fundooContext.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    note.Trash = false;
+                    fundooContext.SaveChanges();
+                    return false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
 
