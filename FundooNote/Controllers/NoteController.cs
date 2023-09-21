@@ -144,7 +144,30 @@ namespace FundooNote.Controllers
                 throw ex;
             }
         }
-       
+
+
+        [Authorize, HttpPost]
+        [Route("IsTrash")]
+        public IActionResult IsTrash(int NoteId)
+        {
+            try
+            {
+                var result = noteBusiness.IsTrash(NoteId);
+                if (result == true)
+                {
+                    return Ok(new { success = true, message = "Note Trashed SuccessFully", data = result });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "Note UnTrashed SuccessFully", data = result });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
 
