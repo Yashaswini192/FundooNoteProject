@@ -25,5 +25,7 @@ namespace RepoLayer.Interface
         public List<Notes> GetALLNotes();
 
         public bool IsArchive(int NoteId);
+
+        public bool IsPin(int NoteId);
     }
 }

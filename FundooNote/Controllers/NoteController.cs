@@ -215,6 +215,30 @@ namespace FundooNote.Controllers
             }
         }
 
+        [Authorize, HttpPost]
+        [Route("ISPin")]
+
+        public IActionResult ISPin(int NoteId)
+        {
+            try
+            {
+                var result = noteBusiness.IsPin(NoteId);
+                if(result == true)
+                {
+                    return Ok(new { success = true, message = "Note is Pinned SuccessFully", data = result });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "Note is UnPinned SuccessFully" });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
     }
 }
 

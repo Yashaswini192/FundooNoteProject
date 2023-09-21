@@ -254,6 +254,30 @@ namespace RepoLayer.Service
             }
         }
 
+        public bool IsPin(int NoteId)
+        {
+            try
+            {
+                var note = fundooContext.Notes.Where(x => x.NoteId == NoteId).FirstOrDefault();
+                if(note.PinNote == false)
+                {
+                    note.PinNote = true;
+                    fundooContext.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    note.PinNote = false;
+                    fundooContext.SaveChanges();
+                    return false;
+                }
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
 
