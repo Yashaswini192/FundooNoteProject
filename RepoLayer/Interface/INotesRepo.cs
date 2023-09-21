@@ -1,8 +1,10 @@
 ﻿using CommonLayer.Model;
+using Microsoft.AspNetCore.Http;
 using RepoLayer.Entity;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace RepoLayer.Interface
 {
@@ -16,5 +18,8 @@ namespace RepoLayer.Interface
 
         public bool DeleteNote(int NoteId);
 
+        public  Task<Tuple<int, string>> Image(int noteId, IFormFile imageFile,int userId);
+
+       
     }
 }

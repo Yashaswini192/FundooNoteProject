@@ -1,4 +1,7 @@
-﻿using CommonLayer.Model;
+﻿using CloudinaryDotNet.Actions;
+using CloudinaryDotNet;
+using CommonLayer.Model;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using RepoLayer.Context;
 using RepoLayer.Entity;
@@ -7,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace RepoLayer.Service
 {
@@ -14,13 +19,18 @@ namespace RepoLayer.Service
     {
         private readonly FundooContext fundooContext;
         private readonly IConfiguration configuration;
+        private readonly FileService fileService;
+        private readonly Cloudinary cloudinary;
 
-        public NotesRepo(FundooContext fundooContext, IConfiguration configuration)
+        public NotesRepo(FundooContext fundooContext, IConfiguration configuration,FileService fileService,Cloudinary cloudinary)
         {
             this.fundooContext = fundooContext;
             this.configuration = configuration;
+            this.fileService = fileService;
+            this.cloudinary = cloudinary;
         }
 
+        //Note Creation
         public Notes CreateNote(CreateNoteModel createNote, int UserId)
         {
             try
@@ -56,7 +66,7 @@ namespace RepoLayer.Service
             }
         }
 
-
+        //Retreiving Note 
         public Notes RetreiveNote(int NoteId)
         {
             try
@@ -79,7 +89,8 @@ namespace RepoLayer.Service
             }
         }
 
-        public Notes UpdateNote(CreateNoteModel createNote, int NoteId,int userId)
+        //Updating Note
+        public Notes UpdateNote(CreateNoteModel createNote, int NoteId, int userId)
         {
 
             try
@@ -112,6 +123,7 @@ namespace RepoLayer.Service
             }
         }
 
+        //Deleting Note
         public bool DeleteNote(int NoteId)
         {
             try
@@ -131,7 +143,45 @@ namespace RepoLayer.Service
             {
                 throw ex;
             }
-        }
-    }
+        }       
 
+        //Uploading Image on Cloudinary 
+        public async Task<Tuple<int, string>> Image(int NoteId, IFormFile imageFile, int userId)
+        {
+            try
+            {
+                var result = fundooContext.Notes.FirstOrDefault(x => x.NoteId == NoteId && x.UserId == userId);
+                if (result != null)
+                {
+
+                    var data = await fileService.SaveImage(imageFile);
+                    if (data.Item1 == 0)
+                    {
+                        return new Tuple<int, string>(0, data.Item2);
+                    }
+
+                    var UploadImage = new ImageUploadParams
+                    {
+                        File = new CloudinaryDotNet.FileDescription(imageFile.FileName, imageFile.OpenReadStream())
+                    };
+
+                    ImageUploadResult uploadResult = await cloudinary.UploadAsync(UploadImage);
+                    string imageUrl = uploadResult.SecureUrl.AbsoluteUri;
+                    result.Image = imageUrl;
+
+                    fundooContext.Notes.Update(result);
+                    fundooContext.SaveChanges();
+
+                    return new Tuple<int, string>(1, "Image Uploaded Successfully");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return null;
+        }
+        
+    }
 }
+
