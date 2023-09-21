@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using RepoLayer.Context;
 using RepoLayer.Entity;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -163,6 +164,29 @@ namespace FundooNote.Controllers
                 }
             }
             catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [Authorize, HttpGet]
+        [Route("GetALLNotes")]
+
+        public IActionResult GetALLNotes()
+        {
+            try
+            {
+                var result = noteBusiness.GetALLNotes();
+                if(result != null)
+                {
+                    return Ok(new { success = true, message = "Retreived ALL Notes SuccessFully", data = result });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "Failed to Retreive Notes" });
+                }
+            }
+            catch(Exception ex)
             {
                 throw ex;
             }

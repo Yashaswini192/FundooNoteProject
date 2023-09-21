@@ -21,5 +21,7 @@ namespace RepoLayer.Interface
         public  Task<Tuple<int, string>> Image(int noteId, IFormFile imageFile,int userId);
 
         public bool IsTrash(int NoteId);
+
+        public List<Notes> GetALLNotes();
     }
 }

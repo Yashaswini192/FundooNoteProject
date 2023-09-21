@@ -210,6 +210,26 @@ namespace RepoLayer.Service
             }
         }
 
+        public List<Notes> GetALLNotes()
+        {
+            try
+            {
+                var result = fundooContext.Notes.ToList();
+                if(result.Count != 0)
+                {
+                    return result;
+                }
+                else
+                {
+                    return null;
+                }
+
+            }catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
 

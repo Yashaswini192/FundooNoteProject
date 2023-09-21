@@ -94,6 +94,18 @@ namespace BusinessLayer.Service
 
         }
 
+        public List<Notes> GetALLNotes()
+        {
+            try
+            {
+                return notesRepo.GetALLNotes();
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+        }
+
 
     }
 }
