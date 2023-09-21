@@ -1,11 +1,14 @@
 ﻿using BusinessLayer.Interface;
 using CommonLayer.Model;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using RepoLayer.Entity;
 using RepoLayer.Interface;
+using RepoLayer.Service;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BusinessLayer.Service
 {
@@ -65,5 +68,18 @@ namespace BusinessLayer.Service
             }
         }
 
+        
+        public async Task<Tuple<int, string>> Image(int noteId, IFormFile imageFile, int userId)
+        {
+            try
+            {
+                return await notesRepo.Image(noteId, imageFile, userId);
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+        }
+      
     }
 }
