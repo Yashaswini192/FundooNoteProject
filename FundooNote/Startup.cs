@@ -1,5 +1,6 @@
 using BusinessLayer.Interface;
 using BusinessLayer.Service;
+using CloudinaryDotNet;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -74,10 +75,22 @@ namespace FundooNote
                         securitySchema, Array.Empty<string>() }
                 });
             });
-        
 
-        //Configuration for JWT 
-        var token = Configuration.GetValue<string>("JWTConfig:key");
+            //configuration for cloudinary
+            IConfigurationSection configurationSection = Configuration.GetSection("CloudinaryConnection");
+            Account cloudinaryAccount = new Account(
+                configurationSection["CloudName"],
+                configurationSection["ApiKey"],
+                configurationSection["APISecret"]
+                );
+            Cloudinary cloudinary = new Cloudinary(cloudinaryAccount);
+            services.AddSingleton(cloudinary);
+
+            services.AddTransient<FileService, FileService>();
+
+
+            //Configuration for JWT 
+            var token = Configuration.GetValue<string>("JWTConfig:key");
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -119,7 +132,7 @@ namespace FundooNote
 
             app.UseRouting();
           
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -1,10 +1,14 @@
 ﻿using BusinessLayer.Interface;
 using CommonLayer.Model;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using RepoLayer.Context;
 using RepoLayer.Entity;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace FundooNote.Controllers
 {
@@ -19,13 +23,15 @@ namespace FundooNote.Controllers
             this.noteBusiness = noteBusiness;
         }
 
+        [Authorize]
         [HttpPost]
         [Route("NoteCreation")]
-        public IActionResult NoteCreation(CreateNoteModel createNote,int UserId)
+        public IActionResult NoteCreation(CreateNoteModel createNote)
         {
             try
             {
-                var result = noteBusiness.CreateNote(createNote,UserId);
+                int userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserID").Value);
+                var result = noteBusiness.CreateNote(createNote, userId);
 
                 if(result != null)
                 {
@@ -43,6 +49,7 @@ namespace FundooNote.Controllers
 
         }
 
+        [Authorize]
         [HttpGet]
         [Route("RetreiveNote")]
 
@@ -67,7 +74,7 @@ namespace FundooNote.Controllers
             }
         }
 
-
+        [Authorize]
         [HttpPost]
         [Route("UpdateNote")]
 
@@ -78,7 +85,7 @@ namespace FundooNote.Controllers
                 var result = noteBusiness.UpdateNote(createNote, NoteId, userId);
                 if (result != null)
                 {
-                    return Ok(new { success = true, message = "Note Updated Successfully", data = result });
+                    return Ok(new { success = true,data = result });
                 }
                 else
                 {
@@ -91,13 +98,14 @@ namespace FundooNote.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet]
         [Route("DeleteNote")]
-        public IActionResult DeleteNote(int NoteId, int userId)
+        public IActionResult DeleteNote(int NoteId)
         {
             try
             {
-                var result = noteBusiness.DeleteNote(NoteId, userId);
+                var result = noteBusiness.DeleteNote(NoteId);
                 if (result != null)
                 {
                     return Ok(new { success = true, message = "Note Deleted SuccessFully" });
@@ -112,6 +120,31 @@ namespace FundooNote.Controllers
                 throw ex;
             }
         }
+
+        [Authorize]
+        [HttpPost]
+        [Route("UploadImage")]
+        public async Task<IActionResult> UploadImage(int NoteId, IFormFile imageFile)
+        {
+            try
+            {
+                int userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserID").Value);
+                Tuple<int, string> result = await noteBusiness.Image(NoteId, imageFile, userId);
+                if (result.Item1 == 1)
+                {
+                    return Ok(new { success = true, messege = "Image Update Sucessfully", data = result });
+                }
+                else
+                {
+                    return NotFound(new { success = false, messege = "Image is not Uploaded" });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+       
     }
 }
 
