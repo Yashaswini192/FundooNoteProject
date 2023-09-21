@@ -80,6 +80,20 @@ namespace BusinessLayer.Service
                 throw (ex);
             }
         }
-      
+
+        public bool IsTrash(int NoteId)
+        {
+            try
+            {
+                return notesRepo.IsTrash(NoteId);
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+
+        }
+
+
     }
 }
