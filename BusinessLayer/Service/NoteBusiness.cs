@@ -106,6 +106,18 @@ namespace BusinessLayer.Service
             }
         }
 
+        public bool IsArchive(int NoteId)
+        {
+            try
+            {
+                return notesRepo.IsArchive(NoteId);
+            }
+            catch(Exception ex)
+            {
+                throw (ex);
+            }
+        }
+
 
     }
 }

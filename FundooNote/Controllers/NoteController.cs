@@ -192,6 +192,29 @@ namespace FundooNote.Controllers
             }
         }
 
+        [Authorize, HttpPost]
+        [Route("ISArchive")]
+
+        public IActionResult ISArchive(int NoteId)
+        {
+            try
+            {
+                var result = noteBusiness.IsArchive(NoteId);
+                if(result == true)
+                {
+                    return Ok(new { success = true, message = "Note Archived Successfully", data = result });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "Note UnArchived SuccessFully" });
+                }
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
 

@@ -230,6 +230,30 @@ namespace RepoLayer.Service
             }
         }
 
+        public bool IsArchive(int NoteId)
+        {
+            try
+            {
+                var note = fundooContext.Notes.Where(x => x.NoteId == NoteId).FirstOrDefault();
+                if(note.Archive == false)
+                {
+                    note.Archive = true;
+                    fundooContext.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    note.Archive = false;
+                    fundooContext.SaveChanges();
+                    return false;
+                }
+            }
+            catch(Exception ex) 
+            {
+                throw ex;
+            }
+        }
+
     }
 }
 
