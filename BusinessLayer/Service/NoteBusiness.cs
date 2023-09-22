@@ -130,6 +130,18 @@ namespace BusinessLayer.Service
             }
         }
 
+        public Notes Color(int NoteId, string Color)
+        {
+            try
+            {
+                return notesRepo.Color(NoteId, Color);
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+        }
+
 
     }
 }

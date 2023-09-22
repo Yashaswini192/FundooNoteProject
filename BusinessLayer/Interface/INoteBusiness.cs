@@ -27,5 +27,7 @@ namespace BusinessLayer.Interface
         public bool IsArchive(int NoteId);
 
         public bool IsPin(int NoteId);
+
+        public Notes Color(int NoteId, string Color);
     }
 }

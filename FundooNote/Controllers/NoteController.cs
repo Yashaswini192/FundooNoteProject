@@ -239,6 +239,30 @@ namespace FundooNote.Controllers
 
         }
 
+        [Authorize,HttpPost]
+        [Route("NoteColor")]
+
+        public IActionResult NoteColor(int NoteId, string Color)
+        {
+            try
+            {
+                var result = noteBusiness.Color(NoteId,Color);
+                if(result != null)
+                {
+                    return Ok(new { success = true, message = "SuccessFully Added Color to Note", data = result });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "Could Not Add Color to Note" });
+                }
+
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
 

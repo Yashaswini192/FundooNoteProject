@@ -143,14 +143,14 @@ namespace RepoLayer.Service
             {
                 throw ex;
             }
-        }       
+        }             
 
         //Uploading Image on Cloudinary 
         public async Task<Tuple<int, string>> Image(int NoteId, IFormFile imageFile, int userId)
         {
             try
             {
-                var result = fundooContext.Notes.FirstOrDefault(x => x.NoteId == NoteId && x.UserId == userId);
+                var result = fundooContext.Notes.FirstOrDefault( x=>x.UserId == userId && x.NoteId == NoteId);
                 if (result != null)
                 {
 
@@ -273,6 +273,29 @@ namespace RepoLayer.Service
                 }
             }
             catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public Notes Color(int NoteId, string Color)
+        {
+            try
+            {
+                var result = fundooContext.Notes.Where(x => x.NoteId == NoteId).FirstOrDefault();
+                if (result != null)
+                {
+                    result.BgColor = Color;
+                    fundooContext.SaveChanges();
+                    return result;
+
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
             {
                 throw ex;
             }
