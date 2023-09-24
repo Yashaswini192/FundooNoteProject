@@ -40,5 +40,18 @@ namespace BusinessLayer.Service
                 throw ex;
             }
         }
+
+        public List<LabelEntity> UpdateLabel(string newLabelName, long UserId, string labelName)
+        {
+            try
+            {
+                return labelRepo.UpdateLabel(newLabelName, UserId, labelName);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

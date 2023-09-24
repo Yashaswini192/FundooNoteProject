@@ -72,5 +72,31 @@ namespace RepoLayer.Service
                 throw ex;
             }
         }
+
+        public List<LabelEntity> UpdateLabel(string newLabelName, long UserId, string labelName)
+        {
+            try
+            {
+                var user = fundooContext.LabelTable.Where(x => x.UserId == UserId && x.LabelName == labelName).ToList();
+                if (user != null)
+                {
+                    foreach (var item in user)
+                    {
+                        item.LabelName = newLabelName;
+                    }
+                    fundooContext.SaveChanges();
+                    return user;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+       
     }
 }

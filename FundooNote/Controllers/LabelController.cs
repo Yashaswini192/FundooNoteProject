@@ -68,5 +68,31 @@ namespace FundooNote.Controllers
                 throw ex;
             }
         }
+
+        [Authorize,HttpPost]
+        [Route("UpdateLabel")]
+
+        public IActionResult UpdateLabel(string newLabelName, long UserId, string labelName)
+        {
+            try
+            {
+                var result = labelBusiness.UpdateLabel(newLabelName, UserId, labelName);
+                if(result != null)
+                {
+                    return Ok(new { success = true,message = "Label Updated Successfully",data = result});
+                }
+                else
+                {
+                    return BadRequest(new {success = false,message = "Could not update label"});
+                }
+
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+      
     }
 }
