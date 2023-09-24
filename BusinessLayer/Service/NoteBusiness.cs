@@ -142,6 +142,18 @@ namespace BusinessLayer.Service
             }
         }
 
+        public List<Notes> SearchQuery(string keyword)
+        {
+            try
+            {
+                return notesRepo.SearchQuery(keyword);
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+        }
+
 
     }
 }

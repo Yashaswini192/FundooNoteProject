@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices.WindowsRuntime;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace RepoLayer.Service
 {
@@ -296,6 +297,27 @@ namespace RepoLayer.Service
                 }
             }
             catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        //Your tasks is to develop an API that enables users to find notes based on keywords or phrases.
+        //The API should accept a search query parameter and return the search results
+        public List<Notes> SearchQuery(string keyword)
+        {
+            try
+            {
+                var result = fundooContext.Notes.Where(x => x.Title.Contains(keyword) || x.Description.Contains(keyword)).ToList();
+                if(result != null)
+                {
+                    return result;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception ex)
             {
                 throw ex;
             }

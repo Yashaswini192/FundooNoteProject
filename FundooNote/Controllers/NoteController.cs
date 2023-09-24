@@ -263,6 +263,30 @@ namespace FundooNote.Controllers
             }
         }
 
+        [Authorize,HttpGet]
+        [Route("SearchQuery")]
+
+        public IActionResult SearchQuery(string keyword)
+        {
+            try
+            {
+                var result = noteBusiness.SearchQuery(keyword);
+                if(result != null)
+                {
+                    return Ok(new { success = true, message = "SuccessFully Retreived Note With Given Keyword", data = result });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "CouldNot Find Note with Given Keyword" });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
 

@@ -29,5 +29,7 @@ namespace BusinessLayer.Interface
         public bool IsPin(int NoteId);
 
         public Notes Color(int NoteId, string Color);
+
+        public List<Notes> SearchQuery(string keyword);
     }
 }
