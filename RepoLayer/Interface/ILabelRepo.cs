@@ -13,6 +13,8 @@ namespace RepoLayer.Interface
         public List<LabelEntity> RetrieveLabel(int userId);
 
         public List<LabelEntity> UpdateLabel(string newLabelName, long UserId, string labelName);
-        
+
+        public LabelEntity DeleteLabel(string labelName, int userId);
+
     }
 }

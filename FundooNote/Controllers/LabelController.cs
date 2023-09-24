@@ -93,6 +93,27 @@ namespace FundooNote.Controllers
             }
         }
 
-      
+        [Authorize, HttpGet]
+        [Route("DeleteLabel")]
+        public IActionResult DeleteLabel(string labelName, int userId)
+        {
+            try
+            {
+                var result = labelBusiness.DeleteLabel(labelName, userId);
+                if (result != null)
+                {
+                    return Ok(new { success = true, message = "Label Deleted Successfully" });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "Could not Found label" });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

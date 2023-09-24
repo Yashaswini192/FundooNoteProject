@@ -97,6 +97,29 @@ namespace RepoLayer.Service
                 throw ex;
             }
         }
-       
+
+        public LabelEntity DeleteLabel(string labelName, int userId)
+        {
+            try
+            {
+                var deleteLabel = fundooContext.LabelTable.Where(x => x.UserId == userId && x.LabelName == labelName).FirstOrDefault();
+                if (deleteLabel != null)
+                {
+                    fundooContext.LabelTable.Remove(deleteLabel);
+                    fundooContext.SaveChanges();
+                    return deleteLabel;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
     }
 }

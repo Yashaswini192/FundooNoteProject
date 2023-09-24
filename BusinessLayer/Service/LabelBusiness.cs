@@ -53,5 +53,16 @@ namespace BusinessLayer.Service
             }
         }
 
+        public LabelEntity DeleteLabel(string labelName, int userId)
+        {
+            try
+            {
+                return labelRepo.DeleteLabel(labelName, userId);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
