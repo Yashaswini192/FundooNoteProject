@@ -50,5 +50,27 @@ namespace RepoLayer.Service
                 throw ex;
             }
         }
+
+
+        public List<LabelEntity> RetrieveLabel(int userId)
+        {
+            try
+            {
+                var user = fundooContext.LabelTable.Where(x => x.UserId == userId).ToList();
+                if (user != null)
+                {
+                    return user;
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

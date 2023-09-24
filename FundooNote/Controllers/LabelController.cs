@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using RepoLayer.Entity;
 using System;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Threading.Tasks;
 
 namespace FundooNote.Controllers 
@@ -34,6 +35,31 @@ namespace FundooNote.Controllers
                 else
                 {
                     return BadRequest(new { success = false, message = "Label is not created" });
+                }
+
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [Authorize,HttpGet]
+        [Route("RetreiveLabel")]
+
+        public IActionResult RetreiveLabel(int UserId)
+        {
+            try
+            {
+                int userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserID").Value);
+                var res = labelBusiness.RetrieveLabel(UserId);
+                if(res != null)
+                {
+                    return Ok(new { success = true, message = "Retreived Successfully", data = res });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "Could not Find Label" });
                 }
 
             }

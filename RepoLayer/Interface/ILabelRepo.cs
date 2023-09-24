@@ -9,5 +9,7 @@ namespace RepoLayer.Interface
     public interface ILabelRepo
     {
         public LabelEntity CreateLabel(LabelModel labelmodel, int UserId, int NoteId);
+
+        public List<LabelEntity> RetrieveLabel(int userId);
     }
 }
