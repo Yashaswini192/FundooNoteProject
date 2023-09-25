@@ -26,5 +26,17 @@ namespace BusinessLayer.Service
                 throw ex;
             }
         }
+
+        public bool DeleteCollab(int collabId)
+        {
+            try
+            {
+                return collabRepo.DeleteCollab(collabId);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

@@ -32,13 +32,30 @@ namespace RepoLayer.Service
                 fundooContext.Add(collab);
                 fundooContext.SaveChanges();
                 return collab;
-                
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }           
+        }
+
+        public bool DeleteCollab(int collabId)
+        {
+            try
+            {
+                var collabid = fundooContext.Collab.Where(x  => x.CollabId == collabId).FirstOrDefault();
+                if (collabid != null)
+                {
+                    fundooContext.Collab.Remove(collabid);
+                    fundooContext.SaveChanges();
+                    return true;
+                }
+                return false;               
             }
             catch(Exception ex)
             {
                 throw ex;
             }
-           
         }
 
     }

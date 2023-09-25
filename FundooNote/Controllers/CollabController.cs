@@ -40,5 +40,29 @@ namespace FundooNote.Controllers
             }
         }
 
+        [Authorize,HttpGet]
+        [Route("DeleteCollab")]
+
+        public IActionResult DeleteCollab(int collabId)
+        {
+            try
+            {
+                int userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserID").Value);
+                var result = collabBusiness.DeleteCollab(collabId);
+                if(result != null)
+                {
+                    return Ok(new { success = true, message = "Deleted SuccessFully" });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "Unsuccessfull" });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

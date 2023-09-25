@@ -8,5 +8,7 @@ namespace RepoLayer.Interface
     public interface ICollabRepo
     {
         public CollabEntity CreateCollab(string Email, int UserId, int NoteId);
+
+        public bool DeleteCollab(int collabId);
     }
 }
