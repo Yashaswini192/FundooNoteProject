@@ -64,5 +64,29 @@ namespace FundooNote.Controllers
             }
         }
 
+
+        [Authorize, HttpGet]
+        [Route("RetreiveAll")]
+
+        public IActionResult RetreiveAll()
+        {
+            try
+            {
+                var res = collabBusiness.RetreiveAll();
+                if(res != null)
+                {
+                    return Ok(new { success = true, message = "Retreived SuccessFully", data = res });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "Retreival UnsuccessFull" });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

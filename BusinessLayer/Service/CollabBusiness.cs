@@ -38,5 +38,17 @@ namespace BusinessLayer.Service
                 throw ex;
             }
         }
+
+        public List<CollabEntity> RetreiveAll()
+        {
+            try
+            {
+                return collabRepo.RetreiveAll();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

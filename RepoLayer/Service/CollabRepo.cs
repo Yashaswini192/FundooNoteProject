@@ -58,5 +58,26 @@ namespace RepoLayer.Service
             }
         }
 
+        public List<CollabEntity> RetreiveAll()
+        {
+            try
+            {
+                var res = fundooContext.Collab.ToList();
+                if(res.Count != 0)
+                {
+                    return res;
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

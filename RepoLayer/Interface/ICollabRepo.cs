@@ -10,5 +10,6 @@ namespace RepoLayer.Interface
         public CollabEntity CreateCollab(string Email, int UserId, int NoteId);
 
         public bool DeleteCollab(int collabId);
+        public List<CollabEntity> RetreiveAll();
     }
 }
