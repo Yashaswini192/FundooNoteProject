@@ -4,7 +4,6 @@ using Microsoft.IdentityModel.Tokens;
 using RepoLayer.Context;
 using RepoLayer.Entity;
 using RepoLayer.Interface;
-using RepoLayer.Migrations;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -39,7 +38,7 @@ namespace RepoLayer.Service
                 user.Email = userRegistration.Email;
                 user.Password = userRegistration.Password;
 
-                fundoo.users.Add(user);
+                fundoo.UserTable.Add(user);
                 fundoo.SaveChanges();
 
                 if (user != null)
@@ -63,7 +62,7 @@ namespace RepoLayer.Service
             try
             {
 
-                var user = fundoo.users.FirstOrDefault(c => c.Email == login.Email && c.Password == login.Password);
+                var user = fundoo.UserTable.FirstOrDefault(c => c.Email == login.Email && c.Password == login.Password);
 
                 if (user != null)
                 {
@@ -119,7 +118,7 @@ namespace RepoLayer.Service
         {
             try
             {
-                var emailCheck = this.fundoo.users.Where(b => b.Email == email).FirstOrDefault();
+                var emailCheck = this.fundoo.UserTable.Where(b => b.Email == email).FirstOrDefault();
                 if (emailCheck != null)
                 {
                     var token = GenerateToken(emailCheck.Email, emailCheck.UserId);
@@ -145,7 +144,7 @@ namespace RepoLayer.Service
             {
                 if (resetPassword.newPassword.Equals(resetPassword.confirmPassword))
                 {
-                    var user = fundoo.users.Where(x => x.Email == email).FirstOrDefault();
+                    var user = fundoo.UserTable.Where(x => x.Email == email).FirstOrDefault();
                     user.Password = resetPassword.confirmPassword;
 
                     fundoo.SaveChanges();
@@ -169,7 +168,7 @@ namespace RepoLayer.Service
         {
             try
             {
-                var result = fundoo.users.ToList();
+                var result = fundoo.UserTable.ToList();
                 if(result.Count != 0)
                 {
                     return result;
@@ -189,7 +188,7 @@ namespace RepoLayer.Service
         {
             try
             {
-                var result = fundoo.users.FirstOrDefault(x => x.UserId == (UserId));
+                var result = fundoo.UserTable.FirstOrDefault(x => x.UserId == (UserId));
                 if(result != null)
                 {
                     return result;

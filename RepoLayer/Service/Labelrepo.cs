@@ -24,14 +24,14 @@ namespace RepoLayer.Service
             {
                 LabelEntity label = new LabelEntity(); 
 
-                var user = fundooContext.users.FirstOrDefault(y => y.UserId == UserId);
+                var user = fundooContext.UserTable.FirstOrDefault(y => y.UserId == UserId);
                 if ((user != null && NoteId != null) || (NoteId == null))
                 {
                     label.LabelName = labelmodel.LabelName;
                     label.UserId = UserId;
                     label.NoteId = NoteId;
 
-                    fundooContext.LabelTable.Add(label);
+                    fundooContext.Label.Add(label);
                     fundooContext.SaveChanges();
 
                     if (label != null)
@@ -56,7 +56,7 @@ namespace RepoLayer.Service
         {
             try
             {
-                var user = fundooContext.LabelTable.Where(x => x.UserId == userId).ToList();
+                var user = fundooContext.Label.Where(x => x.UserId == userId).ToList();
                 if (user != null)
                 {
                     return user;
@@ -77,7 +77,7 @@ namespace RepoLayer.Service
         {
             try
             {
-                var user = fundooContext.LabelTable.Where(x => x.UserId == UserId && x.LabelName == labelName).ToList();
+                var user = fundooContext.Label.Where(x => x.UserId == UserId && x.LabelName == labelName).ToList();
                 if (user != null)
                 {
                     foreach (var item in user)
@@ -102,10 +102,10 @@ namespace RepoLayer.Service
         {
             try
             {
-                var deleteLabel = fundooContext.LabelTable.Where(x => x.UserId == userId && x.LabelName == labelName).FirstOrDefault();
+                var deleteLabel = fundooContext.Label.Where(x => x.UserId == userId && x.LabelName == labelName).FirstOrDefault();
                 if (deleteLabel != null)
                 {
-                    fundooContext.LabelTable.Remove(deleteLabel);
+                    fundooContext.Label.Remove(deleteLabel);
                     fundooContext.SaveChanges();
                     return deleteLabel;
                 }

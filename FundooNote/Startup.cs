@@ -46,6 +46,8 @@ namespace FundooNote
             services.AddTransient<INotesRepo, NotesRepo>();
             services.AddTransient<ILabelBusiness, LabelBusiness>();
             services.AddTransient<ILabelRepo, Labelrepo>();
+            services.AddTransient<ICollabBusiness, CollabBusiness>();
+            services.AddTransient<ICollabRepo, CollabRepo>();
             services.AddControllers();
             
             //swagger

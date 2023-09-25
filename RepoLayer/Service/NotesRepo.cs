@@ -48,7 +48,7 @@ namespace RepoLayer.Service
                 notes.Trash = createNote.Trash;
                 notes.UserId = UserId;
 
-                fundooContext.Notes.Add(notes);
+                fundooContext.NoteTable.Add(notes);
                 fundooContext.SaveChanges();
 
                 if (notes != null)
@@ -72,7 +72,7 @@ namespace RepoLayer.Service
         {
             try
             {
-                var result = fundooContext.Notes.FirstOrDefault(x => x.NoteId == NoteId);
+                var result = fundooContext.NoteTable.FirstOrDefault(x => x.NoteId == NoteId);
 
                 if (result != null)
                 {
@@ -97,7 +97,7 @@ namespace RepoLayer.Service
             try
             {
 
-                var result = fundooContext.Notes.FirstOrDefault(x => x.NoteId == NoteId);
+                var result = fundooContext.NoteTable.FirstOrDefault(x => x.NoteId == NoteId);
                 if (result != null)
                 {
                     result.Title = createNote.Title;
@@ -129,11 +129,11 @@ namespace RepoLayer.Service
         {
             try
             {
-                var deleteNote = fundooContext.Notes.Where(x => x.NoteId == NoteId).FirstOrDefault();
+                var deleteNote = fundooContext.NoteTable.Where(x => x.NoteId == NoteId).FirstOrDefault();
 
                 if (deleteNote != null)
                 {
-                    fundooContext.Notes.Remove(deleteNote);
+                    fundooContext.NoteTable.Remove(deleteNote);
                     fundooContext.SaveChanges();
                     return true;
                 }
@@ -151,7 +151,7 @@ namespace RepoLayer.Service
         {
             try
             {
-                var result = fundooContext.Notes.FirstOrDefault( x=>x.UserId == userId && x.NoteId == NoteId);
+                var result = fundooContext.NoteTable.FirstOrDefault( x=>x.UserId == userId && x.NoteId == NoteId);
                 if (result != null)
                 {
 
@@ -170,7 +170,7 @@ namespace RepoLayer.Service
                     string imageUrl = uploadResult.SecureUrl.AbsoluteUri;
                     result.Image = imageUrl;
 
-                    fundooContext.Notes.Update(result);
+                    fundooContext.NoteTable.Update(result);
                     fundooContext.SaveChanges();
 
                     return new Tuple<int, string>(1, "Image Uploaded Successfully");
@@ -189,7 +189,7 @@ namespace RepoLayer.Service
         {
             try
             {
-                var note = fundooContext.Notes.Where(x => x.NoteId == NoteId).FirstOrDefault();
+                var note = fundooContext.NoteTable.Where(x => x.NoteId == NoteId).FirstOrDefault();
 
                 if (note.Trash == false)
                 {
@@ -215,7 +215,7 @@ namespace RepoLayer.Service
         {
             try
             {
-                var result = fundooContext.Notes.ToList();
+                var result = fundooContext.NoteTable.ToList();
                 if(result.Count != 0)
                 {
                     return result;
@@ -235,7 +235,7 @@ namespace RepoLayer.Service
         {
             try
             {
-                var note = fundooContext.Notes.Where(x => x.NoteId == NoteId).FirstOrDefault();
+                var note = fundooContext.NoteTable.Where(x => x.NoteId == NoteId).FirstOrDefault();
                 if(note.Archive == false)
                 {
                     note.Archive = true;
@@ -259,7 +259,7 @@ namespace RepoLayer.Service
         {
             try
             {
-                var note = fundooContext.Notes.Where(x => x.NoteId == NoteId).FirstOrDefault();
+                var note = fundooContext.NoteTable.Where(x => x.NoteId == NoteId).FirstOrDefault();
                 if(note.PinNote == false)
                 {
                     note.PinNote = true;
@@ -283,7 +283,7 @@ namespace RepoLayer.Service
         {
             try
             {
-                var result = fundooContext.Notes.Where(x => x.NoteId == NoteId).FirstOrDefault();
+                var result = fundooContext.NoteTable.Where(x => x.NoteId == NoteId).FirstOrDefault();
                 if (result != null)
                 {
                     result.BgColor = Color;
@@ -307,7 +307,7 @@ namespace RepoLayer.Service
         {
             try
             {
-                var result = fundooContext.Notes.Where(x => x.Title.Contains(keyword) || x.Description.Contains(keyword)).ToList();
+                var result = fundooContext.NoteTable.Where(x => x.Title.Contains(keyword) || x.Description.Contains(keyword)).ToList();
                 if(result != null)
                 {
                     return result;

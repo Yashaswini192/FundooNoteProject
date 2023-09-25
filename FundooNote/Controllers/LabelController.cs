@@ -22,12 +22,12 @@ namespace FundooNote.Controllers
 
         [Authorize,HttpPost]
         [Route("CreateLabel")]
-        public IActionResult CreateLabel(LabelModel labelmodel, int UserId, int NoteId)
+        public IActionResult CreateLabel(LabelModel labelmodel,int NoteId)
         {
             try
             {
                 int userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserID").Value);
-                var result = labelBusiness.CreateLabel(labelmodel, UserId, NoteId);
+                var result = labelBusiness.CreateLabel(labelmodel, userId, NoteId);
                 if(result != null)
                 {
                     return Ok(new { success = true, message = "Label Created SuccessFully", data = result });
@@ -47,12 +47,12 @@ namespace FundooNote.Controllers
         [Authorize,HttpGet]
         [Route("RetreiveLabel")]
 
-        public IActionResult RetreiveLabel(int UserId)
+        public IActionResult RetreiveLabel()
         {
             try
             {
                 int userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserID").Value);
-                var res = labelBusiness.RetrieveLabel(UserId);
+                var res = labelBusiness.RetrieveLabel(userId);
                 if(res != null)
                 {
                     return Ok(new { success = true, message = "Retreived Successfully", data = res });
@@ -70,13 +70,14 @@ namespace FundooNote.Controllers
         }
 
         [Authorize,HttpPost]
-        [Route("UpdateLabel")]
+        [Route("UpdateLabel/{newLabelName}/{labelName}")]
 
-        public IActionResult UpdateLabel(string newLabelName, long UserId, string labelName)
+        public IActionResult UpdateLabel(string newLabelName, string labelName)
         {
             try
             {
-                var result = labelBusiness.UpdateLabel(newLabelName, UserId, labelName);
+                int userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserID").Value);
+                var result = labelBusiness.UpdateLabel(newLabelName, userId, labelName);
                 if(result != null)
                 {
                     return Ok(new { success = true,message = "Label Updated Successfully",data = result});

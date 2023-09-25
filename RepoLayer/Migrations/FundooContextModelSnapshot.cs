@@ -41,7 +41,7 @@ namespace RepoLayer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CollabTable");
+                    b.ToTable("Collab");
                 });
 
             modelBuilder.Entity("RepoLayer.Entity.LabelEntity", b =>
@@ -66,7 +66,7 @@ namespace RepoLayer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("LabelTable");
+                    b.ToTable("Label");
                 });
 
             modelBuilder.Entity("RepoLayer.Entity.Notes", b =>
@@ -107,7 +107,7 @@ namespace RepoLayer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notes");
+                    b.ToTable("NoteTable");
                 });
 
             modelBuilder.Entity("RepoLayer.Entity.User", b =>
@@ -131,7 +131,7 @@ namespace RepoLayer.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("users");
+                    b.ToTable("UserTable");
                 });
 
             modelBuilder.Entity("RepoLayer.Entity.CollabEntity", b =>
