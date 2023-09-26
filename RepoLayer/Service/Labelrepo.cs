@@ -52,12 +52,12 @@ namespace RepoLayer.Service
         }
 
 
-        public List<LabelEntity> RetrieveLabel(int userId)
+        public List<LabelEntity> RetrieveLabel(int userId,int NoteId)
         {
             try
             {
-                var user = fundooContext.Label.Where(x => x.UserId == userId).ToList();
-                if (user != null)
+                var user = fundooContext.Label.Where(x => x.UserId == userId && x.NoteId == NoteId).ToList();
+                if (user.Count != 0)
                 {
                     return user;
                 }
@@ -65,7 +65,6 @@ namespace RepoLayer.Service
                 {
                     return null;
                 }
-
             }
             catch (Exception ex)
             {
@@ -73,16 +72,16 @@ namespace RepoLayer.Service
             }
         }
 
-        public List<LabelEntity> UpdateLabel(string newLabelName, long UserId, string labelName)
+        public List<LabelEntity> UpdateLabel(int labelId, long UserId, string labelName)
         {
             try
             {
-                var user = fundooContext.Label.Where(x => x.UserId == UserId && x.LabelName == labelName).ToList();
+                var user = fundooContext.Label.Where(x => x.UserId == UserId && x.LabelId == labelId).ToList();
                 if (user != null)
                 {
                     foreach (var item in user)
                     {
-                        item.LabelName = newLabelName;
+                        item.LabelId = labelId;
                     }
                     fundooContext.SaveChanges();
                     return user;
@@ -98,11 +97,11 @@ namespace RepoLayer.Service
             }
         }
 
-        public LabelEntity DeleteLabel(string labelName, int userId)
+        public LabelEntity DeleteLabel(int NoteId, int userId)
         {
             try
             {
-                var deleteLabel = fundooContext.Label.Where(x => x.UserId == userId && x.LabelName == labelName).FirstOrDefault();
+                var deleteLabel = fundooContext.Label.Where(x => x.UserId == userId && x.NoteId == NoteId).FirstOrDefault();
                 if (deleteLabel != null)
                 {
                     fundooContext.Label.Remove(deleteLabel);

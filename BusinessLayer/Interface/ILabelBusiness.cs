@@ -10,11 +10,11 @@ namespace BusinessLayer.Interface
     {
         public LabelEntity CreateLabel(LabelModel labelmodel, int UserId, int NoteId);
 
-        public List<LabelEntity> RetrieveLabel( int userId);
+        public List<LabelEntity> RetrieveLabel( int userId,int NoteId);
 
-        public List<LabelEntity> UpdateLabel(string newLabelName, long UserId, string labelName);
+        public List<LabelEntity> UpdateLabel(int labelId, long UserId, string labelName);
 
-        public LabelEntity DeleteLabel(string labelName, int userId);
+        public LabelEntity DeleteLabel(int NoteId, int userId);
 
     }
 }
