@@ -58,12 +58,12 @@ namespace RepoLayer.Service
             }
         }
 
-        public List<CollabEntity> RetreiveAll()
+        public CollabEntity RetreiveAll(int userId, int NoteId)
         {
             try
             {
-                var res = fundooContext.Collab.ToList();
-                if(res.Count != 0)
+                var res = fundooContext.Collab.Where(x =>x.UserId == userId && x.NoteId == NoteId).FirstOrDefault();
+                if(res != null)
                 {
                     return res;
                 }

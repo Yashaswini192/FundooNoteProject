@@ -39,11 +39,11 @@ namespace BusinessLayer.Service
             }
         }
 
-        public List<CollabEntity> RetreiveAll()
+        public CollabEntity RetreiveAll(int userId, int NoteId)
         {
             try
             {
-                return collabRepo.RetreiveAll();
+                return collabRepo.RetreiveAll(userId,NoteId);
             }
             catch (Exception ex)
             {
