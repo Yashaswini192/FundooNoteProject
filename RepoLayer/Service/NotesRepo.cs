@@ -211,11 +211,11 @@ namespace RepoLayer.Service
             }
         }
 
-        public List<Notes> GetALLNotes()
+        public List<Notes> GetALLNotes(int userId)
         {
             try
             {
-                var result = fundooContext.NoteTable.ToList();
+                var result = fundooContext.NoteTable.Where(x => x.UserId == userId).ToList();
                 if(result.Count != 0)
                 {
                     return result;

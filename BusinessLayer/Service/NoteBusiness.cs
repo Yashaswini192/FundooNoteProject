@@ -94,11 +94,11 @@ namespace BusinessLayer.Service
 
         }
 
-        public List<Notes> GetALLNotes()
+        public List<Notes> GetALLNotes(int userId)
         {
             try
             {
-                return notesRepo.GetALLNotes();
+                return notesRepo.GetALLNotes(userId);
             }
             catch (Exception ex)
             {

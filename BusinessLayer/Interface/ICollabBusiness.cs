@@ -11,6 +11,6 @@ namespace BusinessLayer.Interface
 
         public bool DeleteCollab(int collabId);
 
-        public CollabEntity RetreiveAll(int userId, int NoteId);
+        public List<CollabEntity> RetreiveAll(int userId, int NoteId);
     }
 }

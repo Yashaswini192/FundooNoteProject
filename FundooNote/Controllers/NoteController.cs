@@ -3,12 +3,16 @@ using CommonLayer.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using RepoLayer.Context;
 using RepoLayer.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace FundooNote.Controllers
@@ -18,10 +22,12 @@ namespace FundooNote.Controllers
     public class NoteController : ControllerBase
     {
         private readonly INoteBusiness noteBusiness;
+        private readonly IDistributedCache distributedCache;
 
-        public NoteController(INoteBusiness noteBusiness)
+        public NoteController(INoteBusiness noteBusiness,IDistributedCache distributedCache)
         {
             this.noteBusiness = noteBusiness;
+            this.distributedCache = distributedCache;
         }
 
         [Authorize]
@@ -100,7 +106,7 @@ namespace FundooNote.Controllers
         }
 
         [Authorize]
-        [HttpGet]
+        [HttpDelete]
         [Route("DeleteNote")]
         public IActionResult DeleteNote(int NoteId)
         {
@@ -176,7 +182,8 @@ namespace FundooNote.Controllers
         {
             try
             {
-                var result = noteBusiness.GetALLNotes();
+                int userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserID").Value);
+                var result = noteBusiness.GetALLNotes(userId);
                 if(result != null)
                 {
                     return Ok(new { success = true, message = "Retreived ALL Notes SuccessFully", data = result });
@@ -286,7 +293,46 @@ namespace FundooNote.Controllers
                 throw ex;
             }
         }
+        
+        [Authorize,HttpGet]
+        [Route("GetAllNotesUsingRedisCache")]
+
+        public async Task<IActionResult> GetAllNotesUsingRedisCache()
+        {
+            try
+            {
+                var cacheKey = $"NoteList_{User.FindFirst("UserId").Value}";
+                
+                var serializedNoteList = await distributedCache.GetStringAsync(cacheKey);
+                List<Notes> noteList;
+                if(serializedNoteList != null)
+                {
+                    
+                    noteList = JsonConvert.DeserializeObject<List<Notes>>(serializedNoteList);
+                }
+                else
+                {
+                    int userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserID").Value);
+                    noteList = noteBusiness.GetALLNotes(userId);
+                    serializedNoteList = JsonConvert.SerializeObject(noteList);
+                   
+                   
+                    await distributedCache.SetStringAsync(cacheKey, serializedNoteList,
+                        new DistributedCacheEntryOptions
+                        {
+                            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30),
+                            SlidingExpiration = TimeSpan.FromMinutes(30)
+                        });
+                }
+                return Ok(noteList);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            }
+        }
 
     }
-}
+
 

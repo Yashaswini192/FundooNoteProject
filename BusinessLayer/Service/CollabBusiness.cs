@@ -39,7 +39,7 @@ namespace BusinessLayer.Service
             }
         }
 
-        public CollabEntity RetreiveAll(int userId, int NoteId)
+        public List<CollabEntity> RetreiveAll(int userId, int NoteId)
         {
             try
             {

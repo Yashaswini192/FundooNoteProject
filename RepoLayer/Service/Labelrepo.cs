@@ -81,7 +81,7 @@ namespace RepoLayer.Service
                 {
                     foreach (var item in user)
                     {
-                        item.LabelId = labelId;
+                        item.LabelName = labelName;
                     }
                     fundooContext.SaveChanges();
                     return user;

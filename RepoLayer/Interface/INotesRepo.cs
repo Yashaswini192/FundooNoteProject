@@ -22,7 +22,7 @@ namespace RepoLayer.Interface
 
         public bool IsTrash(int NoteId);
 
-        public List<Notes> GetALLNotes();
+        public List<Notes> GetALLNotes(int userId);
 
         public bool IsArchive(int NoteId);
 
