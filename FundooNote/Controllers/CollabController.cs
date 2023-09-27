@@ -96,5 +96,43 @@ namespace FundooNote.Controllers
             }
         }
 
+        [Authorize, HttpGet]
+        [Route("GetAllCollabByRedisCache")]
+
+        public async Task<IActionResult> GetAllLabelsByRedisCache(int NoteId)
+        {
+            try
+            {
+                var cacheKey = $"CollabList_{User.FindFirst("UserId").Value}";
+
+                var serializedCollabList = await distributedCache.GetStringAsync(cacheKey);
+                List<CollabEntity> CollabList;
+                if (serializedCollabList != null)
+                {
+
+                    CollabList = JsonConvert.DeserializeObject<List<CollabEntity>>(serializedCollabList);
+                }
+                else
+                {
+                    int userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserID").Value);
+                    CollabList = collabBusiness.RetreiveAll(userId, NoteId);
+                    serializedCollabList = JsonConvert.SerializeObject(CollabList);
+
+
+                    await distributedCache.SetStringAsync(cacheKey, serializedCollabList,
+                        new DistributedCacheEntryOptions
+                        {
+                            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30),
+                            SlidingExpiration = TimeSpan.FromMinutes(30)
+                        });
+                }
+                return Ok(CollabList);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
     }
 }
