@@ -124,6 +124,44 @@ namespace FundooNote.Controllers
             {
                 throw ex;
             }
-        }      
+        }
+
+        [Authorize, HttpGet]
+        [Route("GetAllLabelsByRedisCache")]
+
+        public async Task<IActionResult> GetAllLabelsByRedisCache(int NoteId)
+        {
+            try
+            {
+                var cacheKey = $"LabelList_{User.FindFirst("UserId").Value}";
+
+                var serializedLabelList = await distributedCache.GetStringAsync(cacheKey);
+                List<LabelEntity> LabelList;
+                if (serializedLabelList != null)
+                {
+                    LabelList = JsonConvert.DeserializeObject<List<LabelEntity>>(serializedLabelList);
+                }
+                else
+                {
+                    int userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserID").Value);
+                    LabelList = labelBusiness.RetrieveLabel(userId, NoteId);
+                    serializedLabelList = JsonConvert.SerializeObject(LabelList);
+
+
+                    await distributedCache.SetStringAsync(cacheKey, serializedLabelList,
+                        new DistributedCacheEntryOptions
+                        {
+                            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30),
+                            SlidingExpiration = TimeSpan.FromMinutes(30)
+                        });
+                }
+                return Ok(LabelList);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
