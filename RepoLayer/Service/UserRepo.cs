@@ -114,6 +114,38 @@ namespace RepoLayer.Service
 
         }
 
+        public string GenerateTokenForPassword(string email)
+        {
+
+            try
+            {
+                var securitykey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWTConfig:key"]));
+                var credentials = new SigningCredentials(securitykey, SecurityAlgorithms.HmacSha256);
+
+                var claims = new[] {
+                    
+                    new Claim("Email", email),
+
+                };
+
+                var token = new JwtSecurityToken(
+                    issuer: configuration["Jwt:Issuer"],
+                    audience: configuration["Jwt:Audience"],
+                    claims,
+                    expires: DateTime.Now.AddHours(1),
+                    signingCredentials: credentials
+                    );
+
+                return new JwtSecurityTokenHandler().WriteToken(token);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
         public string ForgotPassword(string email)
         {
             try
@@ -121,7 +153,7 @@ namespace RepoLayer.Service
                 var emailCheck = this.fundoo.UserTable.Where(b => b.Email == email).FirstOrDefault();
                 if (emailCheck != null)
                 {
-                    var token = GenerateToken(emailCheck.Email, emailCheck.UserId);
+                    var token = GenerateTokenForPassword(emailCheck.Email);
                     MSMQ msmq = new MSMQ();
                     msmq.SendMessage(token);
                     return token;

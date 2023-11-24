@@ -21,7 +21,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace FundooNote
 {
@@ -48,8 +47,10 @@ namespace FundooNote
             services.AddTransient<ILabelRepo, Labelrepo>();
             services.AddTransient<ICollabBusiness, CollabBusiness>();
             services.AddTransient<ICollabRepo, CollabRepo>();
-            services.AddControllers();
             
+            services.AddControllers();
+            //services.AddCors();
+
             //swagger
             services.AddSwaggerGen(c =>
             {
@@ -115,6 +116,17 @@ namespace FundooNote
 
                 };
             });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "AllowLocalhost",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:3000")
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                    });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -135,8 +147,17 @@ namespace FundooNote
             app.UseHttpsRedirection();
 
             app.UseRouting();
-          
+            app.UseCors("AllowLocalhost");
+            //app.UseCors(x => x
+            //               .AllowAnyMethod()
+            //               .AllowAnyHeader()
+            //               .SetIsOriginAllowed(origin => true) // allow any origin
+            //               .AllowCredentials());
+
             app.UseAuthentication();
+
+           
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -29,11 +29,11 @@ namespace BusinessLayer.Service
             }
         }
 
-        public List<LabelEntity> RetrieveLabel(int userId)
+        public List<LabelEntity> RetrieveLabel(int userId, int NoteId)
         {
             try
             {
-                return labelRepo.RetrieveLabel(userId);
+                return labelRepo.RetrieveLabel(userId,NoteId);
             }
             catch(Exception ex)
             {
@@ -41,11 +41,11 @@ namespace BusinessLayer.Service
             }
         }
 
-        public List<LabelEntity> UpdateLabel(string newLabelName, long UserId, string labelName)
+        public List<LabelEntity> UpdateLabel(int labelId, long UserId, string labelName)
         {
             try
             {
-                return labelRepo.UpdateLabel(newLabelName, UserId, labelName);
+                return labelRepo.UpdateLabel(labelId, UserId, labelName);
             }
             catch(Exception ex)
             {
@@ -53,11 +53,11 @@ namespace BusinessLayer.Service
             }
         }
 
-        public LabelEntity DeleteLabel(string labelName, int userId)
+        public LabelEntity DeleteLabel(int NoteId, int userId)
         {
             try
             {
-                return labelRepo.DeleteLabel(labelName, userId);
+                return labelRepo.DeleteLabel(NoteId, userId);
             }
             catch (Exception ex)
             {

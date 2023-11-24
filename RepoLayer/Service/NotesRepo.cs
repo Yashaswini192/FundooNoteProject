@@ -68,11 +68,11 @@ namespace RepoLayer.Service
         }
 
         //Retreiving Note 
-        public Notes RetreiveNote(int NoteId)
+        public Notes RetreiveNote(int NoteId,int userId)
         {
             try
             {
-                var result = fundooContext.NoteTable.FirstOrDefault(x => x.NoteId == NoteId);
+                var result = fundooContext.NoteTable.FirstOrDefault(x => x.NoteId == NoteId && x.UserId == userId);
 
                 if (result != null)
                 {
@@ -125,11 +125,11 @@ namespace RepoLayer.Service
         }
 
         //Deleting Note
-        public bool DeleteNote(int NoteId)
+        public bool DeleteNote(int NoteId,int userId)
         {
             try
             {
-                var deleteNote = fundooContext.NoteTable.Where(x => x.NoteId == NoteId).FirstOrDefault();
+                var deleteNote = fundooContext.NoteTable.FirstOrDefault(x => x.NoteId == NoteId && x.UserId == userId);
 
                 if (deleteNote != null)
                 {
@@ -185,25 +185,29 @@ namespace RepoLayer.Service
 
 
         //ISTrash
-        public bool IsTrash(int NoteId)
+        public Notes IsTrash(int NoteId,int userId)
         {
             try
             {
-                var note = fundooContext.NoteTable.Where(x => x.NoteId == NoteId).FirstOrDefault();
-
-                if (note.Trash == false)
+                var note = fundooContext.NoteTable.FirstOrDefault(x => x.NoteId == NoteId && x.UserId == userId);
+                if (note != null)
                 {
-                    note.Trash = true;
-                    fundooContext.SaveChanges();
-                    return true;
-                }
-                else
-                {
-                    note.Trash = false;
-                    fundooContext.SaveChanges();
-                    return false;
-                }
 
+                    if (note.Trash == false)
+                    {
+                        note.Trash = true;
+                        fundooContext.SaveChanges();
+                        return note;
+                    }
+                    else
+                    {
+                        note.Trash = false;
+                        fundooContext.SaveChanges();
+                        return note;
+                    }
+                    
+                }
+                else { return null; }
             }
             catch (Exception ex)
             {
@@ -211,11 +215,11 @@ namespace RepoLayer.Service
             }
         }
 
-        public List<Notes> GetALLNotes()
+        public List<Notes> GetALLNotes(int userId)
         {
             try
             {
-                var result = fundooContext.NoteTable.ToList();
+                var result = fundooContext.NoteTable.Where(x => x.UserId == userId).ToList();
                 if(result.Count != 0)
                 {
                     return result;
@@ -231,23 +235,28 @@ namespace RepoLayer.Service
             }
         }
 
-        public bool IsArchive(int NoteId)
+        public bool IsArchive(int NoteId,int userId)
         {
             try
             {
-                var note = fundooContext.NoteTable.Where(x => x.NoteId == NoteId).FirstOrDefault();
-                if(note.Archive == false)
+                var note = fundooContext.NoteTable.FirstOrDefault(x => x.NoteId == NoteId && x.UserId == userId);
+                if (note != null)
                 {
-                    note.Archive = true;
-                    fundooContext.SaveChanges();
-                    return true;
+                    if (note.Archive == true)
+                    {
+                        note.Archive = false;
+                        fundooContext.SaveChanges();
+                        //return true;
+                    }
+                    else
+                    {
+                        note.Archive = true;
+                        fundooContext.SaveChanges();
+                        //return false;
+                    }
+                    //fundooContext.SaveChanges();
                 }
-                else
-                {
-                    note.Archive = false;
-                    fundooContext.SaveChanges();
-                    return false;
-                }
+                return true;
             }
             catch(Exception ex) 
             {
@@ -255,11 +264,11 @@ namespace RepoLayer.Service
             }
         }
 
-        public bool IsPin(int NoteId)
+        public bool IsPin(int NoteId, int userId)
         {
             try
             {
-                var note = fundooContext.NoteTable.Where(x => x.NoteId == NoteId).FirstOrDefault();
+                var note = fundooContext.NoteTable.FirstOrDefault(x => x.NoteId == NoteId && x.UserId == userId);
                 if(note.PinNote == false)
                 {
                     note.PinNote = true;
@@ -283,7 +292,7 @@ namespace RepoLayer.Service
         {
             try
             {
-                var result = fundooContext.NoteTable.Where(x => x.NoteId == NoteId).FirstOrDefault();
+                var result = fundooContext.NoteTable.FirstOrDefault(x => x.NoteId == NoteId);
                 if (result != null)
                 {
                     result.BgColor = Color;

@@ -12,21 +12,21 @@ namespace RepoLayer.Interface
     {
         public Notes CreateNote(CreateNoteModel createNote,int UserId);
 
-        public Notes RetreiveNote(int NoteId);
+        public Notes RetreiveNote(int NoteId, int userId);
 
         public Notes UpdateNote(CreateNoteModel createNote, int NoteId, int userId);
 
-        public bool DeleteNote(int NoteId);
+        public bool DeleteNote(int NoteId, int userId);
 
         public  Task<Tuple<int, string>> Image(int noteId, IFormFile imageFile,int userId);
 
-        public bool IsTrash(int NoteId);
+        public  Notes IsTrash(int NoteId, int userId);
 
-        public List<Notes> GetALLNotes();
+        public List<Notes> GetALLNotes(int userId);
 
-        public bool IsArchive(int NoteId);
+        public bool IsArchive(int NoteId, int userId);
 
-        public bool IsPin(int NoteId);
+        public bool IsPin(int NoteId, int userId);
 
         public Notes Color(int NoteId, string Color);
 

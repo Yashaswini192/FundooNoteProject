@@ -32,11 +32,11 @@ namespace BusinessLayer.Service
             }
         }
 
-        public Notes RetreiveNote(int NoteId)
+        public Notes RetreiveNote(int NoteId, int userId)
         {
             try
             {
-                return notesRepo.RetreiveNote(NoteId);
+                return notesRepo.RetreiveNote(NoteId, userId);
             }
             catch (Exception ex)
             {
@@ -56,11 +56,11 @@ namespace BusinessLayer.Service
             }
         }
 
-        public bool DeleteNote(int NoteId)
+        public bool DeleteNote(int NoteId, int userId)
         {
             try
             {
-                return notesRepo.DeleteNote(NoteId);
+                return notesRepo.DeleteNote(NoteId, userId);
             }
             catch (Exception ex)
             {
@@ -81,11 +81,11 @@ namespace BusinessLayer.Service
             }
         }
 
-        public bool IsTrash(int NoteId)
+        public Notes IsTrash(int NoteId, int userId)
         {
             try
             {
-                return notesRepo.IsTrash(NoteId);
+                return  notesRepo.IsTrash(NoteId,userId);
             }
             catch (Exception ex)
             {
@@ -94,11 +94,11 @@ namespace BusinessLayer.Service
 
         }
 
-        public List<Notes> GetALLNotes()
+        public List<Notes> GetALLNotes(int userId)
         {
             try
             {
-                return notesRepo.GetALLNotes();
+                return notesRepo.GetALLNotes(userId);
             }
             catch (Exception ex)
             {
@@ -106,11 +106,11 @@ namespace BusinessLayer.Service
             }
         }
 
-        public bool IsArchive(int NoteId)
+        public bool IsArchive(int NoteId,int userId)
         {
             try
             {
-                return notesRepo.IsArchive(NoteId);
+                return notesRepo.IsArchive(NoteId,userId);
             }
             catch(Exception ex)
             {
@@ -118,11 +118,11 @@ namespace BusinessLayer.Service
             }
         }
 
-        public bool IsPin(int NoteId)
+        public bool IsPin(int NoteId, int userId)
         {
             try
             {
-                return notesRepo.IsPin(NoteId);
+                return notesRepo.IsPin(NoteId,userId);
             }
             catch(Exception ex)
             {

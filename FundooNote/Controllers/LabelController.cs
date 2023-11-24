@@ -2,6 +2,7 @@
 using CommonLayer.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RepoLayer.Context;
 using RepoLayer.Entity;
 using System;
 using System.Linq;
@@ -47,12 +48,13 @@ namespace FundooNote.Controllers
         [Authorize,HttpGet]
         [Route("RetreiveLabel")]
 
-        public IActionResult RetreiveLabel()
+        public IActionResult RetreiveLabel(int NoteId)
         {
             try
             {
                 int userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserID").Value);
-                var res = labelBusiness.RetrieveLabel(userId);
+                var res = labelBusiness.RetrieveLabel(userId, NoteId);
+
                 if(res != null)
                 {
                     return Ok(new { success = true, message = "Retreived Successfully", data = res });
@@ -70,14 +72,14 @@ namespace FundooNote.Controllers
         }
 
         [Authorize,HttpPost]
-        [Route("UpdateLabel/{newLabelName}/{labelName}")]
+        [Route("UpdateLabel")]
 
-        public IActionResult UpdateLabel(string newLabelName, string labelName)
+        public IActionResult UpdateLabel(int labelID, string labelName)
         {
             try
             {
                 int userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserID").Value);
-                var result = labelBusiness.UpdateLabel(newLabelName, userId, labelName);
+                var result = labelBusiness.UpdateLabel(labelID, userId, labelName);
                 if(result != null)
                 {
                     return Ok(new { success = true,message = "Label Updated Successfully",data = result});
@@ -96,11 +98,12 @@ namespace FundooNote.Controllers
 
         [Authorize, HttpGet]
         [Route("DeleteLabel")]
-        public IActionResult DeleteLabel(string labelName, int userId)
+        public IActionResult DeleteLabel(int NoteId)
         {
             try
             {
-                var result = labelBusiness.DeleteLabel(labelName, userId);
+                int userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserID").Value);
+                var result = labelBusiness.DeleteLabel(NoteId, userId);
                 if (result != null)
                 {
                     return Ok(new { success = true, message = "Label Deleted Successfully" });

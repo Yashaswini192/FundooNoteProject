@@ -49,7 +49,7 @@ namespace FundooNote.Controllers
             {
                 int userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserID").Value);
                 var result = collabBusiness.DeleteCollab(collabId);
-                if(result != null)
+                if(result != false)
                 {
                     return Ok(new { success = true, message = "Deleted SuccessFully" });
                 }
@@ -68,18 +68,19 @@ namespace FundooNote.Controllers
         [Authorize, HttpGet]
         [Route("RetreiveAll")]
 
-        public IActionResult RetreiveAll()
+        public IActionResult RetreiveAll(int NoteId)
         {
             try
             {
-                var res = collabBusiness.RetreiveAll();
+                int userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserID").Value);
+                var res = collabBusiness.RetreiveAll(userId,NoteId);
                 if(res != null)
                 {
-                    return Ok(new { success = true, message = "Retreived SuccessFully", data = res });
+                    return Ok(new { success = true, message = "Retreived SuccessFully", data = res});
                 }
                 else
                 {
-                    return BadRequest(new { success = false, message = "Retreival UnsuccessFull" });
+                    return BadRequest(new { success = false, message = "Retreival UnsuccessFull"});
                 }
             }
             catch (Exception ex)

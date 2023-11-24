@@ -108,7 +108,7 @@ namespace FundooNote.Controllers
                 var email =User.Claims.FirstOrDefault(x=>x.Type=="Email").Value.ToString();
                 var result = userBusiness.ResetPassword(resetPassword, email);
 
-                if (result != null)
+                if (result != false)
                 {
                     return Ok(new { success = true, message = "Password has Changed successfully", data = result });
                 }

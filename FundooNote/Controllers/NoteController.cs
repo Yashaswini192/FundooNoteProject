@@ -58,7 +58,8 @@ namespace FundooNote.Controllers
         {
             try
             {
-                var result = noteBusiness.RetreiveNote(NoteId);
+                int userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserID").Value);
+                var result = noteBusiness.RetreiveNote(NoteId,userId);
 
                 if(result != null)
                 {
@@ -106,8 +107,9 @@ namespace FundooNote.Controllers
         {
             try
             {
-                var result = noteBusiness.DeleteNote(NoteId);
-                if (result != null)
+                int userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserID").Value);
+                var result = noteBusiness.DeleteNote(NoteId, userId);
+                if (result != false)
                 {
                     return Ok(new { success = true, message = "Note Deleted SuccessFully" });
                 }
@@ -147,14 +149,15 @@ namespace FundooNote.Controllers
         }
 
 
-        [Authorize, HttpPost]
+        [Authorize, HttpPut] 
         [Route("IsTrash")]
         public IActionResult IsTrash(int NoteId)
         {
             try
             {
-                var result = noteBusiness.IsTrash(NoteId);
-                if (result == true)
+                int userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserID").Value);
+                var result = noteBusiness.IsTrash(NoteId, userId);
+                if (result != null)
                 {
                     return Ok(new { success = true, message = "Note Trashed SuccessFully", data = result });
                 }
@@ -176,7 +179,8 @@ namespace FundooNote.Controllers
         {
             try
             {
-                var result = noteBusiness.GetALLNotes();
+                int userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserID").Value);
+                var result = noteBusiness.GetALLNotes(userId);
                 if(result != null)
                 {
                     return Ok(new { success = true, message = "Retreived ALL Notes SuccessFully", data = result });
@@ -192,21 +196,22 @@ namespace FundooNote.Controllers
             }
         }
 
-        [Authorize, HttpPost]
+        [Authorize, HttpPut]
         [Route("ISArchive")]
 
         public IActionResult ISArchive(int NoteId)
         {
             try
             {
-                var result = noteBusiness.IsArchive(NoteId);
-                if(result == true)
+                int userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserID").Value);
+                var result = noteBusiness.IsArchive(NoteId, userId);
+                if(result != null)
                 {
                     return Ok(new { success = true, message = "Note Archived Successfully", data = result });
                 }
                 else
                 {
-                    return BadRequest(new { success = false, message = "Note UnArchived SuccessFully" });
+                    return BadRequest(new { success = false, message = "Note cannot be unarchived." });
                 }
             }
             catch(Exception ex)
@@ -215,14 +220,15 @@ namespace FundooNote.Controllers
             }
         }
 
-        [Authorize, HttpPost]
+        [Authorize, HttpPut]
         [Route("ISPin")]
 
         public IActionResult ISPin(int NoteId)
         {
             try
             {
-                var result = noteBusiness.IsPin(NoteId);
+                int userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserID").Value);
+                var result = noteBusiness.IsPin(NoteId,userId);
                 if(result == true)
                 {
                     return Ok(new { success = true, message = "Note is Pinned SuccessFully", data = result });
